@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { FILTERS, filterCount, type Filter } from "@/lib/filter";
 
 interface Props {
@@ -12,26 +12,44 @@ interface Props {
 /** 分段控制（shadcn Toggle Group 外观 + 滑动背景指示器） */
 export function FilterChips({ active, onChange, reduceMotion }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
-  const [ind, setInd] = useState<CSSProperties>({});
+  const indRef = useRef<HTMLSpanElement>(null);
 
-  const moveInd = useCallback(() => {
+  const moveInd = useCallback((animate: boolean) => {
     const b = boxRef.current?.querySelector<HTMLButtonElement>('.chip[aria-pressed="true"]');
-    if (!b) return;
-    setInd({ width: b.offsetWidth, transform: `translateX(${b.offsetLeft}px)` });
+    const ind = indRef.current;
+    if (!b || !ind) return;
+    const shouldAnimate = animate && ind.hasAttribute("data-ready");
+    if (!shouldAnimate) ind.style.transition = "none";
+    ind.style.width = `${b.offsetWidth}px`;
+    ind.style.transform = `translateX(${b.offsetLeft}px)`;
+    ind.dataset.ready = "";
+    if (!shouldAnimate) {
+      void ind.offsetWidth;
+      ind.style.transition = "";
+    }
   }, []);
 
-  useLayoutEffect(moveInd, [active, moveInd]);
+  useLayoutEffect(() => {
+    moveInd(true);
+  }, [active, moveInd]);
 
   useEffect(() => {
-    addEventListener("resize", moveInd);
+    let alive = true;
+    const onResize = () => moveInd(false);
+    addEventListener("resize", onResize);
     // 字体加载后按钮宽度会变，需要重新校正滑块
-    document.fonts?.ready.then(moveInd);
-    return () => removeEventListener("resize", moveInd);
+    document.fonts?.ready.then(() => {
+      if (alive) moveInd(false);
+    });
+    return () => {
+      alive = false;
+      removeEventListener("resize", onResize);
+    };
   }, [moveInd]);
 
   return (
     <div className="chips" ref={boxRef} role="group" aria-label="分类筛选">
-      <span className="chip-ind" style={ind} />
+      <span className="chip-ind" ref={indRef} />
       {FILTERS.map((c) => (
         <button
           key={c}

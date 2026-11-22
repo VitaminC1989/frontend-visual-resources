@@ -46,18 +46,22 @@ export function ResourceExplorer() {
   }, []);
 
   const changeFilter = (f: Filter) => {
-    setFirstPaint(false);
-    withTransition(() => setActive(f));
+    withTransition(() => {
+      setFirstPaint(false);
+      setActive(f);
+    });
   };
 
   const changeSort = (s: SortMode) => {
-    setFirstPaint(false);
-    withTransition(() => setSort(s));
+    withTransition(() => {
+      setFirstPaint(false);
+      setSort(s);
+    });
   };
 
   const resetAll = () => {
-    setFirstPaint(false);
     withTransition(() => {
+      setFirstPaint(false);
       clearQuery();
       setActive("全部");
     });
@@ -68,7 +72,7 @@ export function ResourceExplorer() {
     const onKey = (e: KeyboardEvent) => {
       const input = inputRef.current;
       if (!input) return;
-      if (e.key === "/" && document.activeElement !== input) {
+      if (!e.metaKey && !e.ctrlKey && !e.altKey && e.key === "/" && document.activeElement !== input) {
         e.preventDefault();
         input.focus();
       } else if (e.key === "Escape" && document.activeElement === input) {
@@ -112,7 +116,7 @@ export function ResourceExplorer() {
 
   let n = 0;
   const renderCard = (r: (typeof RESOURCES)[number]) => (
-    <ResourceCard key={r.name} resource={r} position={n++} terms={terms} reveal={firstPaint} />
+    <ResourceCard key={r.url} resource={r} position={n++} terms={terms} reveal={firstPaint} />
   );
 
   return (

@@ -57,7 +57,7 @@ body{margin:0;background:var(--background);color:var(--foreground);font:15px/1.6
 .stat span{font-size:12px;color:var(--muted-fg)}
 
 /* ===== 控制栏（sticky + 毛玻璃） ===== */
-.controls{position:sticky;top:0;z-index:20;margin:0 -24px;padding:14px 24px 12px;background:color-mix(in srgb,var(--background) 82%,transparent);backdrop-filter:saturate(1.6) blur(12px);-webkit-backdrop-filter:saturate(1.6) blur(12px);border-bottom:1px solid transparent;transition:border-color .2s}
+.controls{position:sticky;top:0;z-index:20;margin:0 -24px;padding:14px 24px 12px;background:color-mix(in srgb,var(--background) 82%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(12px);backdrop-filter:saturate(1.6) blur(12px);border-bottom:1px solid transparent;transition:border-color .2s}
 .controls.stuck{border-bottom-color:var(--border)}
 .searchbox{position:relative}
 .searchbox svg{position:absolute;left:13px;top:50%;width:16px;height:16px;transform:translateY(-50%);stroke:var(--muted-fg);pointer-events:none}
@@ -73,7 +73,8 @@ body{margin:0;background:var(--background);color:var(--foreground);font:15px/1.6
 /* 筛选：shadcn Toggle Group 外观 + motion-prompt「Segmented control」滑动背景 */
 .chips{position:relative;display:flex;gap:2px;padding:3px;border-radius:10px;background:var(--muted);border:1px solid var(--border);overflow-x:auto;scrollbar-width:none;max-width:100%}
 .chips::-webkit-scrollbar{display:none}
-.chip-ind{position:absolute;top:3px;left:0;height:calc(100% - 6px);border-radius:7px;background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.1),0 0 0 1px var(--border);transition:transform .32s var(--ease-out),width .32s var(--ease-out);pointer-events:none}
+.chip-ind{position:absolute;top:3px;left:0;height:calc(100% - 6px);border-radius:7px;background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.1),0 0 0 1px var(--border);opacity:0;transition:transform .32s var(--ease-out),width .32s var(--ease-out);pointer-events:none}
+.chip-ind[data-ready]{opacity:1}
 .chip{position:relative;z-index:1;border:0;background:transparent;color:var(--muted-fg);padding:5px 12px;border-radius:7px;font:500 13px/1.4 var(--sans);cursor:pointer;white-space:nowrap;transition:color .2s var(--ease-out)}
 .chip:hover{color:var(--foreground)}
 .chip[aria-pressed=true]{color:var(--foreground)}
