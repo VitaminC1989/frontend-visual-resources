@@ -18,6 +18,16 @@ export const CATEGORIES = ["组件库", "动效", "灵感画廊", "落地页"] a
 
 export type Category = (typeof CATEGORIES)[number];
 
+export const CATEGORY_META: Record<
+  Category,
+  { key: "components" | "motion" | "gallery" | "landing"; en: string; blurb: string }
+> = {
+  组件库: { key: "components", en: "Components", blurb: "可复制、可定制的 React / Tailwind 组件基础" },
+  动效: { key: "motion", en: "Motion", blurb: "过渡曲线、交互微动效与 AI 动效提示词" },
+  灵感画廊: { key: "gallery", en: "Gallery", blurb: "真实上线网站、整页录屏与界面排版参考" },
+  落地页: { key: "landing", en: "Landing", blurb: "落地页区块、转化模块与成品模板库" },
+};
+
 export interface Resource {
   name: string;
   url: string;
@@ -26,6 +36,7 @@ export interface Resource {
   tags: string[];
   price: string;
   note?: string;
+  command?: string;
   rec?: boolean;
   warn?: string;
   source: SourceKey;
@@ -38,6 +49,7 @@ export const RESOURCES: Resource[] = [
     tags: ["组件库", "React", "Tailwind", "AI 友好", "免费", "开源"],
     price: "免费，MIT 开源（GitHub 约 12.8 万星）",
     note: "支持 npx shadcn 命令安装；官方 MCP 可接入 Claude Code、Cursor、Codex。",
+    command: "npx shadcn",
     source: "khyssabc",
   },
   {
@@ -70,6 +82,7 @@ export const RESOURCES: Resource[] = [
     tags: ["动效", "React", "Next.js", "AI 友好", "免费", "付费"],
     price: "免费版 $0（核心库 + Skill + 每月 100 积分）；Pro $12/月；Business $59/月（5 席）",
     note: "Skill 支持 Claude Code、Cursor、Codex；Motion Agent 用 npx transitions-agent 运行。",
+    command: "npx transitions-agent",
     source: "khyssabc",
   },
   {
@@ -78,6 +91,7 @@ export const RESOURCES: Resource[] = [
     tags: ["动效", "提示词", "AI 友好", "免费", "开源"],
     price: "免费，MIT 开源（GitHub 约 1.9k 星）",
     note: "可装成 Skill：npx skills add showheyohtaki/motion-prompt；仓库 github.com/showheyohtaki/motion-prompt",
+    command: "npx skills add showheyohtaki/motion-prompt",
     source: "chatgptastra",
   },
   {
